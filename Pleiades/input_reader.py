@@ -2,14 +2,20 @@ import sys
 import os
 import numpy as np
 
-# Record directory entered into the argument (Maybe add if/else for 2nd argument)
-directory = str(sys.argv[1])
-# print(directory)
+# To run this: python input_reader.py <directory>
 
-# Loop over several directories (Test later)
-# for i in range(0,5):
-    # print(directory + 'case' + str(i))
-    # os.chdir(directory + 'case' + str(i))
+# Record root directory entered into the argument (Maybe add if/else for 2nd argument)
+rootdir = str(sys.argv[1])
+
+# Create list of subdirectories inside of the specified root directory
+# Maybe Try to clean this up here.. Could include rootdir + dirlist all in one. 
+dirlist = []
+for root, dirs, files in os.walk(rootdir):
+    dirlist += dirs
+
+# Print out the list if needed to double check
+# print(dirlist)
+
 
 # Function that extracts values from main_input
 def extract_input(filename):
@@ -50,5 +56,12 @@ def extract_input(filename):
 
     return name, value
 
-extract_input('main_input')
-    
+# Loop over several subdirectories and extract values from each main_input file.
+for i in dirlist:
+    os.chdir(rootdir + "/" + i)
+    print()
+    print("Working directory: " + os.getcwd())
+    # Extract by calling definition above
+    extract_input('main_input')
+    print()
+    print("-------------------")
